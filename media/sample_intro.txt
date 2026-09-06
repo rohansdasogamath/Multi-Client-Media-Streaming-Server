@@ -1,0 +1,6 @@
+======================================================
+Multi-Client Media Streaming Server - Sample Content
+======================================================
+This is a sample text file served over the TCP streaming server.
+The server streams content in configurable chunks (default 64 KB)
+concurrently to multiple clients using standard POSIX sockets.

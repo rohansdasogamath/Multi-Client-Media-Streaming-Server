@@ -1,0 +1,46 @@
+name: CI
+
+"on":
+  push:
+  pull_request:
+
+jobs:
+  build-and-test:
+    name: "${{ matrix.compiler }} (${{ matrix.build_type }})"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [ gcc, clang ]
+        build_type: [ Debug, Release ]
+        include:
+          - compiler: gcc
+            cc: gcc
+            cxx: g++
+          - compiler: clang
+            cc: clang
+            cxx: clang++
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install build toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential ${{ matrix.compiler }}
+
+      - name: 1. Configure with CMake
+        env:
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+        run: |
+          cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+
+      - name: 2. Build
+        run: |
+          cmake --build build --config ${{ matrix.build_type }} --parallel $(nproc)
+
+      - name: 3. Run CTest
+        run: |
+          ctest --test-dir build --config ${{ matrix.build_type }} --output-on-failure

@@ -1,0 +1,53 @@
+# Build directories
+build/
+bin/
+lib/
+out/
+cmake-build-*/
+
+# Compiled binaries and libraries
+*.o
+*.obj
+*.so
+*.dylib
+*.a
+media_server
+media_client
+streamer_tests
+test_concurrency
+
+# Logs (keep directory)
+logs/*
+!logs/.gitkeep
+
+# Downloaded files in testing
+downloads/
+demo_downloads/
+concurrency_downloads/
+downloads_audit/
+temp/
+
+# Large generated media files (keep directory and text intro)
+media/*.bin
+media/*.mp4
+media/*.mkv
+media/*.avi
+!media/.gitkeep
+!media/sample_intro.txt
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# CMake temporary files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+compile_commands.json
+CTestTestfile.cmake
+Testing/
