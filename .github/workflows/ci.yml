@@ -31,11 +31,8 @@ jobs:
           sudo apt-get install -y cmake build-essential ${{ matrix.compiler }}
 
       - name: 1. Configure with CMake
-        env:
-          CC: ${{ matrix.cc }}
-          CXX: ${{ matrix.cxx }}
         run: |
-          cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
 
       - name: 2. Build
         run: |
@@ -43,4 +40,4 @@ jobs:
 
       - name: 3. Run CTest
         run: |
-          ctest --test-dir build --config ${{ matrix.build_type }} --output-on-failure
+          ctest --test-dir build -C ${{ matrix.build_type }} --output-on-failure

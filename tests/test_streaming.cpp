@@ -124,8 +124,10 @@ void test_concurrent_streaming_integration(const std::string& test_dir, uint16_t
         server->start();
     });
 
-    // Wait briefly for server to bind & listen
-    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    // Wait for server to bind & listen
+    for (int attempts = 0; attempts < 50 && !server->is_running(); ++attempts) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    }
 
     // 1. Test LIST command
     {
@@ -283,7 +285,10 @@ void test_repository_fixture_streaming(uint16_t port) {
         server->start();
     });
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    // Wait for server to bind & listen
+    for (int attempts = 0; attempts < 50 && !server->is_running(); ++attempts) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    }
     TEST_ASSERT(server->is_running(), "Server started with tests/data as media repository");
 
     // Client connects and downloads fixture
